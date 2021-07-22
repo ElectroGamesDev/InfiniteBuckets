@@ -1,0 +1,22 @@
+main : Electro\InfiniteBuckets\InfiniteBuckets
+name: InfiniteBuckets
+version: 1.0.0
+api: 3.0.0
+Author: Electro
+
+commands:
+  buckets:
+    description: Infinite Buckets Command
+    usage: /buckets <give/info>
+    permission: infinitebuckets.cmd
+    
+permissions:
+  infinitebuckets.cmd:
+    default: op
+    description: Permission to use the Infinite Buckets command
+  infinitebuckets.lava.use:
+    default: op
+    description: Permission to use Infinite Lava Buckets
+  infinitebuckets.water.use:
+    default: op
+    description: Permission to use Infinite Water Buckets
