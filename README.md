@@ -1,27 +1,22 @@
 # Information 
  - This Plugin Adds Infinite Water and Lava Buckets To Your Server!
 # Command
-- /buckets see | Sends the voucher info on the item you are holding.
-- /buckets create <Player> <VoucherName> <Command> | Creates a voucher. (Use {player} when giving the voucher claimer their reward.)
-# Important
-- Use {player} when giving the voucher claimer their reward.
+- /buckets info | Sends the info on the infinite bucket you are holding.
+- /buckets give <player> <water/lava> | Gives a player an Infinite Bucket
 # Example
-- /voucher create El3ctr0Games "YouTube Rank" setgroup {player} YouTube
+- /buckets give El3ctr0Games water
 # Permissions
-- vouchers.cmd
+- infinitebuckets.cmd
+ - infinitebuckets.water.use
+- infinitebuckets.lava.use
 # Config
 ```
-# {VoucherName} will display the vouchers name. Example "{VoucherName} Voucher" would display "Rank Voucher" if the voucher name was "Rank".
-
-Voucher_Name: §r§l§6{VoucherName} Voucher
-
-Voucher_Lore: §r§7Right Click/Tap To Claim This Voucher
-
-Voucher_Claimed: §aYou have claimed a {VoucherName} Voucher!
+# If "true", players will need the permission "infinitebuckets.lava.use" or "infinitebuckets.water.use" to be able to use infinite lava/water buckets.
+Water_Bucket_Requires_Perm: false
+Lava_Bucket_Requires_Perm: false
 
 # Timezones can be found at https://www.php.net/manual/en/timezones.php if you don't know what your doing, keep this at "America/Chicago" (OR IT WILL BREAK THE PLUGIN).
 TimeZone: America/Chicago
-
 ```
 # Credits
 - Icon from www.flaticon.com
