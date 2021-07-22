@@ -1,4 +1,4 @@
-# If "true", players will need the permission "infinitebuckets.lava.use" or "infinitebuckets.water.use" to be able to place the water/lava bucket.
+# If "true", players will need the permission "infinitebuckets.lava.use" or "infinitebuckets.water.use" to be able to use infinite lava/water buckets.
 Water_Bucket_Requires_Perm: false
 Lava_Bucket_Requires_Perm: false
 
