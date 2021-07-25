@@ -1,6 +1,3 @@
 # If "true", players will need the permission "infinitebuckets.lava.use" or "infinitebuckets.water.use" to be able to use infinite lava/water buckets.
 Water_Bucket_Requires_Perm: false
 Lava_Bucket_Requires_Perm: false
-
-# Timezones can be found at https://www.php.net/manual/en/timezones.php if you don't know what your doing, keep this at "America/Chicago" (OR IT WILL BREAK THE PLUGIN).
-TimeZone: America/Chicago
