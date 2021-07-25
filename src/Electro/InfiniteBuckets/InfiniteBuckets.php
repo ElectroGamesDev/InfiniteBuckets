@@ -23,7 +23,6 @@ class InfiniteBuckets extends PluginBase implements Listener{
 
     public function onEnable()
     {
-        date_default_timezone_set($this->getConfig()->get("TimeZone"));
         $this->saveDefaultConfig();
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
