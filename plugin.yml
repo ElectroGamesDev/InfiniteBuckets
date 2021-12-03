@@ -20,3 +20,4 @@ permissions:
   infinitebuckets.water.use:
     default: op
     description: Permission to use Infinite Water Buckets
+
