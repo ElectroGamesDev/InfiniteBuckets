@@ -4,8 +4,6 @@ namespace Electro\InfiniteBuckets;
 
 use Electro\InfiniteBuckets\InfiniteBuckets;
 
-use pocketmine\block\Block;
-use pocketmine\math\Vector3;
 use pocketmine\scheduler\Task;
 
 class InfiniteTask extends Task{
@@ -18,7 +16,7 @@ class InfiniteTask extends Task{
 
     }
 
-    public function onRun(int $currentTick)
+    public function onRun() : void
     {
         $this->player->getInventory()->setItemInHand($this->item);
 
