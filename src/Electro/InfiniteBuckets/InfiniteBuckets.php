@@ -2,27 +2,24 @@
 
 namespace Electro\InfiniteBuckets;
 
-use pocketmine\event\block\BlockPlaceEvent;
-use pocketmine\item\Item;
-use pocketmine\nbt\tag\StringTag;
-use pocketmine\Player;
+use pocketmine\item\VanillaItems;
+use pocketmine\player\Player;
 use pocketmine\event\player\PlayerInteractEvent;
 
 use pocketmine\plugin\PluginBase;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use Electro\InfiniteBuckets\InfiniteTask;
 
 use pocketmine\event\Listener;
 
 class InfiniteBuckets extends PluginBase implements Listener{
 
-    public $player;
-    public $types = ["lava", "water"];
+    public array $types = ["lava", "water"];
 
-    public function onEnable()
+    public function onEnable() : void
     {
+        date_default_timezone_set($this->getConfig()->get("TimeZone"));
         $this->saveDefaultConfig();
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
@@ -44,7 +41,7 @@ class InfiniteBuckets extends PluginBase implements Listener{
                             $sender->sendMessage("§l§cUsage: §r§a/buckets give <Player> <Water/Lava>");
                             return true;
                         }
-                        if (!$this->getServer()->getPlayer($args[1]) instanceof Player) {
+                        if (!$this->getServer()->getPlayerExact($args[1]) instanceof Player) {
                             $sender->sendMessage("§l§cERROR: §r§aYou have entered an invalid Player Username.");
                             return true;
                         }
@@ -53,26 +50,24 @@ class InfiniteBuckets extends PluginBase implements Listener{
                             return true;
                         }
 
-                        $player = $this->getServer()->getPlayer($args[1]);
+                        $player = $this->getServer()->getPlayerExact($args[1]);
                         $player->sendMessage("§aYou have given " . $player->getname() . " a " . $args[2] . " Bucket!");
                         if ($args[2] === "water") {
-                            $item = Item::get(Item::BUCKET);
-                            $item->setDamage(8);
+                            $item = VanillaItems::WATER_BUCKET();
                             $item->setCustomName("§r§cInfinite Water Bucket");
                             $item->setLore(["§r§7Right Click/Tap To Place Water"]);
-                            $item->setNamedTagEntry(new StringTag("Creator", $sender->getName()));
-                            $item->setNamedTagEntry(new StringTag("Type", "Water"));
-                            $item->setNamedTagEntry(new StringTag("InfiniteBuckets"));
+                            $item->getNamedTag()->setString("Creator", $sender->getName());
+                            $item->getNamedTag()->setString("Type", "Water");
+                            $item->getNamedTag()->setString("InfiniteBuckets", "InfiniteBuckets");
                             $player->getInventory()->addItem($item);
                         }
                         else{
-                            $item = Item::get(Item::BUCKET);
-                            $item->setDamage(10);
+                            $item = VanillaItems::LAVA_BUCKET();
                             $item->setCustomName("§r§cInfinite Lava Bucket");
                             $item->setLore(["§r§7Right Click/Tap To Place Lava"]);
-                            $item->setNamedTagEntry(new StringTag("Creator", $sender->getName()));
-                            $item->setNamedTagEntry(new StringTag("Type", "Lava"));
-                            $item->setNamedTagEntry(new StringTag("InfiniteBuckets"));
+                            $item->getNamedTag()->setString("Creator", $sender->getName());
+                            $item->getNamedTag()->setString("Type", "Lava");
+                            $item->getNamedTag()->setString("InfiniteBuckets", "InfiniteBuckets");
                             $player->getInventory()->addItem($item);
                         }
                         break;
@@ -82,7 +77,7 @@ class InfiniteBuckets extends PluginBase implements Listener{
                             return true;
                         }
                         $item = $sender->getInventory()->getItemInHand();
-                        if (!$item->getNamedTag()->hasTag("InfiniteBuckets")) {
+                        if (!$item->getNamedTag()->getTag("InfiniteBuckets")) {
                             $sender->sendMessage("§l§cError: §r§aYou must be holding an Infinite Bucket");
                             return true;
                         }
@@ -100,13 +95,13 @@ class InfiniteBuckets extends PluginBase implements Listener{
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
-        if ($event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK || !$item->getNamedTag()->hasTag("InfiniteBuckets")){
+        if ($event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK || !$item->getNamedTag()->getTag("InfiniteBuckets")){
             return true;
         }
         if ($item->getNamedTag()->getString("Type") === "Water") {
             if ($this->getConfig()->get("Water_Bucket_Requires_Perm") === true && !$player->hasPermission("Water_Bucket_Requires_Perm")) {
                 $player->sendMessage("§cYou do not have permissions to use this item");
-                $event->setCancelled(true);
+                $event->cancel();
                 return true;
             }
         }
@@ -114,36 +109,11 @@ class InfiniteBuckets extends PluginBase implements Listener{
         if ($item->getNamedTag()->getString("Type") === "Lava") {
             if ($this->getConfig()->get("Lava_Bucket_Requires_Perm") === true && !$player->hasPermission("Lava_Bucket_Requires_Perm")) {
                 $player->sendMessage("§cYou do not have permissions to use this item");
-                $event->setCancelled(true);
+                $event->cancel();
                 return true;
             }
         }
 
         $this->getScheduler()->scheduleDelayedTask(new InfiniteTask($this, $player, $item), 1);
     }
-
-//    public function onBlockPlace(BlockPlaceEvent $event)
-//    {
-//        $player = $event->getPlayer();
-//        $item = $player->getInventory()->getItemInHand();
-//        if (!$item->getNamedTag()->hasTag("InfiniteBuckets")){
-//            return true;
-//        }
-//        if ($item->getNamedTag()->getString("Type") === "Water") {
-//            if ($this->getConfig()->get("Water_Bucket_Requires_Perm") === true && !$player->hasPermission("Water_Bucket_Requires_Perm")) {
-//                $player->sendMessage("§cYou do not have permissions to use this item");
-//                $event->setCancelled(true);
-//                return true;
-//            }
-//        }
-//
-//        if ($item->getNamedTag()->getString("Type") === "Lava") {
-//            if ($this->getConfig()->get("Lava_Bucket_Requires_Perm") === true && !$player->hasPermission("Lava_Bucket_Requires_Perm")) {
-//                $player->sendMessage("§cYou do not have permissions to use this item");
-//                $event->setCancelled(true);
-//                return true;
-//            }
-//        }
-//    }
-
 }
