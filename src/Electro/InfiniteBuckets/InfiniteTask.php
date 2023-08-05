@@ -8,6 +8,7 @@ use pocketmine\scheduler\Task;
 
 class InfiniteTask extends Task{
 
+    private $plugin;
 
     public function __construct(InfiniteBuckets $plugin, $player, $item){
         $this->plugin = $plugin;
