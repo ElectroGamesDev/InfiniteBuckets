@@ -95,7 +95,7 @@ class InfiniteBuckets extends PluginBase implements Listener{
         $player = $event->getPlayer();
         $item = $event->getItem();
         $block = $event->getBlock();
-        if ($event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK || !$item->getNamedTag()->getTag("InfiniteBuckets") || $block->getTypeId() !== BlockTypeIds::ITEM_FRAME || $block->getTypeId() !== BlockTypeIds::GLOWING_ITEM_FRAME){
+        if ($event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK || !$item->getNamedTag()->getTag("InfiniteBuckets") || $block->getTypeId() === BlockTypeIds::ITEM_FRAME || $block->getTypeId() === BlockTypeIds::GLOWING_ITEM_FRAME){
             return true;
         }
         if ($item->getNamedTag()->getString("Type") === "Water") {
