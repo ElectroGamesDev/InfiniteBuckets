@@ -5,7 +5,7 @@ namespace Electro\InfiniteBuckets;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\event\player\PlayerInteractEvent;
-
+use pocketmine\Block\BlockTypeIds;
 use pocketmine\plugin\PluginBase;
 
 use pocketmine\command\Command;
@@ -94,7 +94,8 @@ class InfiniteBuckets extends PluginBase implements Listener{
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
-        if ($event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK || !$item->getNamedTag()->getTag("InfiniteBuckets")){
+        $block = $event->getBlock();
+        if ($event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK || !$item->getNamedTag()->getTag("InfiniteBuckets") || $block->getTypeId() === BlockTypeIds::ITEM_FRAME || $block->getTypeId() === BlockTypeIds::GLOWING_ITEM_FRAME){
             return true;
         }
         if ($item->getNamedTag()->getString("Type") === "Water") {
